@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post" id="exceldata"  >
+    {% csrf_token %}
+<table border="1" style="width:100%" id="excel">
+    <tr>
+      <th scope="col">  </th>
+      <th scope="col">  </th>
+      <th scope="col" colspan="5">Objetivo macro </th>
+      <th scope="col" colspan="3">Retail</th>
+      <th scope="col" colspan="10"> Unidad de negocio </th>
+    </tr>
+    <tr > 
+      
+      <script> 
+      var long_text = document.getElementById("excel").innerHTML + "<td > Canal </td> <td > Sub canal </td>";
+      var columnas = [];
+      var Objetivos_macro = ['Branding', 'Coppel comunidad', 'Performance', 'Merca Directa', 'Personalización'];
+      var Retail =  ['Ropa', 'Muebles', 'Zapatos']; 
+      var Segmentos = [ 'Crédito Coppel', 'Préstamo personal', 'Coppel Pay', 'Fondo de retiro', 'Seguros (Club de Protección)',
+                       'Coppel Motos', 'Fashion Market','Comunicación interna', 'Atracción de talento', 'Plan de lealtad'];
+      columnas = Objetivos_macro.concat(Retail).concat(Segmentos);
+      var reglones = []; 
+      var Impresos=['Periódico Coppel', 'Revista Coppel', 'Tickets en tienda', 'Prensa', 'Revista Nacional'] ;// VARIAN DE AREA A AREA
+      var TV = ['TV de Paga', 'TV Abierta'];// agregamos lo fijo que varia de area a area 
+      var Radio = ['Radio'];
+      var Exteriores = ['Metro', 'Metrobus', 'Parabuses', 'Carteleras', 'Camiones Urbanos', 'Estaciones Solares'];
+      var Otros = ['Deportes'];
+      reglones[0] = Impresos; reglones[1] = TV; reglones[2]=Radio; reglones[3]=Exteriores;
+      reglones[4] = Otros;
+    var text ='';
+    for (x in columnas){
+        text+= '<td> ' + columnas[x] + ' </td>';
+    }
+    text +='</tr>';
+    for( canal in [Impresos.length, TV.length, Radio.length, Exteriores.length,
+                 Otros.length] ){
+        for(let r=0; r < canal; r++){
+            if( r==0) {
+                text+='<tr> <td rowspan="'+ 0+'" Impresos </td> ';
+                text+='<td> '+ reglones[0][0] +' </td>';// BIEN HARDODEADO XD
+                for( x in columnas)    text+='<td> <input type="checkbox" name="Impresos.'+columnas[x]+'" value=True > </td>' ;
+
+            }
+            text+='</tr>';
+            if( r==1) {
+                text+='<tr> <td rowspan="'+ canal+'" TV </td> ';
+                text+='<td> '+ reglones[canal][r]  +' </td>';
+                for( x in columnas)    text+='<td> <input type="checkbox" name="TV.'+columnas[x]+'" value=True > </td>' ;
+            }
+            text+='</tr>';
+            if( r==2) {
+                text+='<tr> <td rowspan="'+ canal+'" Radio </td> ';
+                text+='<td> '+ reglones[canal][r]  +' </td>';
+                for( x in columnas)    text+='<td> <input type="checkbox" name="Radio.'+columnas[x]+'" value=True > </td>' ;
+            }
+            text+='</tr>';
+            if( r==3) {
+                text+='<tr> <td rowspan="'+ canal+'" Exteriores </td> ';
+                text+='<td> '+ reglones[canal][r]  +' </td>';
+                for( x in columnas)    text+='<td> <input type="checkbox" name="Exteriores.'+columnas[x]+'" value=True > </td>' ;
+            }
+            text+='</tr>';
+            if( r==4) {
+                text+='<tr> <td rowspan="'+ canal.length+'" Otros </td> ';
+                text+='<td> '+ canal[r] +' </td>';
+                for( x in columnas)    text+='<td> <input type="checkbox" name="Otros.'+columnas[x]+'" value=True > </td>' ;
+            }
+            text+='</tr>';
+        }
+
+    }
+     text += '</tr>';
+     long_text += text //+'<input type="submit" value="Carga de datos">';
+     document.getElementById("excel").innerHTML =  long_text ;
+     console.log(reglones);
+      </script>
+    </tr>
+  </table>
+  <input type="submit" value="Carga de datos">
+
+
+{% endblock %}

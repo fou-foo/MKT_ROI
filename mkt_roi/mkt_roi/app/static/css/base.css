@@ -1,9 +1,12 @@
-@import url(http://fonts.googleapis.com/css?family=Muli);
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400&display=swap');
 
 body {
     margin:0;
     padding:0;
-    font-family:helvetica, sans-serif;
+}
+
+div {
+    background-color: #E8F0F6;
 }
 
 p {
@@ -11,7 +14,7 @@ p {
 }
 
 a {
-    color:#12c064;
+    color:#1A5D46;
     text-decoration:none;
 }
 
@@ -19,7 +22,7 @@ a:hover {
     color:#00a74f;
 }
 
-h1, h2, h3, h4, h5 , h6 { font-family: 'Muli', sans-serif; font-weight:normal; }
+h1, h2, h3, h4, h5 , h6 { font-family: 'Muli', 'Roboto'; color: #1A69AA }
 
 h1 {
     border-bottom:1px solid #bbb;
@@ -37,18 +40,18 @@ ol {
 
 #header {
     padding:10px 100px;
-    font-size:14px;
-    background:#12c064;
-    color:#fff;
-    border-bottom:4px solid #1cdf78;
+    font-size: 60px;
+    background:#FDDD31;
+    color:#1866AE;
+    border-bottom:4px solid #1866AE;
     overflow:auto;
 }
 
 #header .logo {
-    font-family: 'Muli', sans-serif;
+    font-family: 'Muli', 'Roboto';
     float:left;
-    color:#f3f7cc;
-    font-size:20px;
+    color:#1866AE;
+    font-size:40px;
     margin-right:10%;
 }
 
@@ -104,14 +107,14 @@ input, textarea {
     clear:both;
     float:left;
     margin:0 0 10px;
-    background:#efefef;
+    background:#ffffff;
     border:0;
     padding:6px 10px;
     font-size:14px;
 }
 input[type=submit], a.button {
     font-weight:bold;
-    background:#12c064;
+    background:#1866AE;
     color:#fff;
     padding:10px 20px;
     font-size:14px;
@@ -274,4 +277,16 @@ img.user-detail {
 .action .date {
     font-style:italic;
     color:#ccc;
+}
+
+.texto_izq {
+    text-align: left; vertical-align: middle;
+}
+
+.texto_der {
+    text-align: right; vertical-align: middle;
+}
+
+.texto_cen{
+    text-align: center; vertical-align: middle;
 }

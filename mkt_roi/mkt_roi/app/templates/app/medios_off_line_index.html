@@ -1,15 +1,38 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<img style="float: left;" alt=""src="{% static 'images/coppel.png' %}" >
-<br>
-<br> 
-<br>medios off line
-<br> 
-<h1>Lorem Ipsum</h1>
-<p>"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."</p>
-<!--<a href="{% url 'app:login' %}">Log In</a>
-    ALGUN DIA AQUI IRA EL LOG-OUT-->
+<table style="width:100%">
+    <tr>
+        <img style="float: left;" alt=""src="{% static 'images/coppel.png' %}" >    </tr>
+   </tr>
+</table> 
+<h1>Medios off line</h1>
 
-<p style="float: right;">Powered by  <img style="float: right;" alt=""src="{% static 'images/cenic.png' %}"> </p>
+<h2>Bienvenido </h2>
+<h3> Que se rife Edmundo aqui  Lorem Ipsum</h3>
+<p>"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."</p>
+
+<table style="width:100%">
+    {% if request.user.is_authenticated %}
+    <h4>Menu</h4>
+    <tr> <td class='texto_izq'>Hola {{ request.user.first_name }} </td> 
+       </tr>
+
+    <tr> <td class='texto_izq'> <a href="{% url "app:medios_off_line_excel" %}"  >Carga de esfuerzos </a>  </td> 
+        <td class='texto_der;'> <a href="{% url "app:logout" %}"  >Consulta o corrección de esfuerzos anteriores </a> </td>  
+    {% endif %}
+    
+</table>
+<p>
+
+
+</p>
+<p>
+
+</p>
+<table style="width:100%">
+    <tr>  <td class='texto_der;'> <a href="{% url "app:logout" %}"  > <b>Logout </b></a>  </td> 
+        <td class='texto_'> Powered by <img style="float: right;" alt=""src="{% static 'images/cenic.png' %}">   </td>
+    </tr>
+</table>
 {% endblock %}
