@@ -10,74 +10,80 @@
       <th scope="col" colspan="3">Retail</th>
       <th scope="col" colspan="10"> Unidad de negocio </th>
     </tr>
-    <tr > 
       
-      <script> 
-      var long_text = document.getElementById("excel").innerHTML + "<td > Canal </td> <td > Sub canal </td>";
+      <script> //esta marranada fue para hacer un array que permita mandar en el post toda la data con ids faciles de identificar y meter en la DB
+     var  text = '';
+     var long_text =  document.getElementById("excel").innerHTML ;
+
       var columnas = [];
       var Objetivos_macro = ['Branding', 'Coppel comunidad', 'Performance', 'Merca Directa', 'Personalización'];
       var Retail =  ['Ropa', 'Muebles', 'Zapatos']; 
       var Segmentos = [ 'Crédito Coppel', 'Préstamo personal', 'Coppel Pay', 'Fondo de retiro', 'Seguros (Club de Protección)',
                        'Coppel Motos', 'Fashion Market','Comunicación interna', 'Atracción de talento', 'Plan de lealtad'];
       columnas = Objetivos_macro.concat(Retail).concat(Segmentos);
-      var reglones = []; 
+      
       var Impresos=['Periódico Coppel', 'Revista Coppel', 'Tickets en tienda', 'Prensa', 'Revista Nacional'] ;// VARIAN DE AREA A AREA
       var TV = ['TV de Paga', 'TV Abierta'];// agregamos lo fijo que varia de area a area 
       var Radio = ['Radio'];
       var Exteriores = ['Metro', 'Metrobus', 'Parabuses', 'Carteleras', 'Camiones Urbanos', 'Estaciones Solares'];
       var Otros = ['Deportes'];
-      reglones[0] = Impresos; reglones[1] = TV; reglones[2]=Radio; reglones[3]=Exteriores;
-      reglones[4] = Otros;
-    var text ='';
+      var subcanales = Array(Impresos.length +TV.length + Radio.length +Exteriores.length+ Otros.length); //ESTE ES EL BUENO
+      var inutil =[Impresos, TV, Radio, Exteriores, Otros];
+      var contador = 0;
+      for(j in inutil){
+      for( i in inutil[j]) {
+       subcanales[contador]= {'canal': mapeo(inutil[j][i], Impresos, TV, Radio, Exteriores, Otros), 'columnas': columnas, 'subcanal': inutil[j][i]};
+       contador+=1;
+      }}
+
+function mapeo(canal){
+    
+    if( Impresos.includes(canal) ) return 'Impresos';
+    if( TV.includes(canal) ) return  'TV';
+    if( Radio.includes(canal) ) return  'Radio';
+    if( Exteriores.includes(canal) ) return  'Exteriores';
+    if( Otros.includes(canal) ) return  'Otros';
+    else return 'no jala';
+}
+    long_text+= '<tr >  <td> Canal </td> <td> Subcanal </td> '; 
+    text ='';
     for (x in columnas){
         text+= '<td> ' + columnas[x] + ' </td>';
     }
     text +='</tr>';
-    for( canal in [Impresos.length, TV.length, Radio.length, Exteriores.length,
-                 Otros.length] ){
-        for(let r=0; r < canal; r++){
-            if( r==0) {
-                text+='<tr> <td rowspan="'+ 0+'" Impresos </td> ';
-                text+='<td> '+ reglones[0][0] +' </td>';// BIEN HARDODEADO XD
-                for( x in columnas)    text+='<td> <input type="checkbox" name="Impresos.'+columnas[x]+'" value=True > </td>' ;
-
+    var bandera_span =true;
+    var n_canales_init = 0;//numero de elementos del primer canal 
+    var n_canales = 0;
+    for( row in subcanales ){
+        text+= '<tr> '
+            n_canales =subcanales.filter(x=> x.canal==subcanales[row].canal ).length;
+            if( n_canales != n_canales_init) bandera_span =true;
+            if( bandera_span==true){
+                text+='<td rowspan="'+ subcanales.filter(x=> x.canal==subcanales[row].canal ).length +'"> '+subcanales[row].canal+' </td> <td>'+ subcanales[row].subcanal +'</td> ';
+                for( c in subcanales[row].columnas){
+                    text+= '<td> <input type="checkbox" name="'+ subcanales[row].canal +'.'+ subcanales[row].subcanal +'.'
+                        +subcanales[row].columnas[c]+ '" value=True > </td>';
+                }
+                text+='</tr>';
+                bandera_span =false;
+            } else {
+                text+=' <td>'+ subcanales[row].subcanal +'</td> ';
+                for( c in subcanales[row].columnas){
+                    text+= '<td> <input type="checkbox" name="'+ subcanales[row].canal +'.'+ subcanales[row].subcanal +'.'+subcanales[row].columnas[c]+ '" value=True > </td>';
+                }
+                text+='</tr>';
             }
-            text+='</tr>';
-            if( r==1) {
-                text+='<tr> <td rowspan="'+ canal+'" TV </td> ';
-                text+='<td> '+ reglones[canal][r]  +' </td>';
-                for( x in columnas)    text+='<td> <input type="checkbox" name="TV.'+columnas[x]+'" value=True > </td>' ;
-            }
-            text+='</tr>';
-            if( r==2) {
-                text+='<tr> <td rowspan="'+ canal+'" Radio </td> ';
-                text+='<td> '+ reglones[canal][r]  +' </td>';
-                for( x in columnas)    text+='<td> <input type="checkbox" name="Radio.'+columnas[x]+'" value=True > </td>' ;
-            }
-            text+='</tr>';
-            if( r==3) {
-                text+='<tr> <td rowspan="'+ canal+'" Exteriores </td> ';
-                text+='<td> '+ reglones[canal][r]  +' </td>';
-                for( x in columnas)    text+='<td> <input type="checkbox" name="Exteriores.'+columnas[x]+'" value=True > </td>' ;
-            }
-            text+='</tr>';
-            if( r==4) {
-                text+='<tr> <td rowspan="'+ canal.length+'" Otros </td> ';
-                text+='<td> '+ canal[r] +' </td>';
-                for( x in columnas)    text+='<td> <input type="checkbox" name="Otros.'+columnas[x]+'" value=True > </td>' ;
-            }
-            text+='</tr>';
+            n_canales_init = n_canales;
         }
-
-    }
-     text += '</tr>';
-     long_text += text //+'<input type="submit" value="Carga de datos">';
-     document.getElementById("excel").innerHTML =  long_text ;
-     console.log(reglones);
+        
+     long_text += text; //+'<input type="submit" value="Carga de datos">';
+     document.getElementById("excel").innerHTML =  long_text; 
       </script>
-    </tr>
-  </table>
-  <input type="submit" value="Carga de datos">
-
+       </table>  
+        <input type="submit" value="Preparar de datos">'
+        </form>
+ 
 
 {% endblock %}
+
+

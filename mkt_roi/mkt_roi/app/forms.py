@@ -1,11 +1,13 @@
 from django import forms
-from .models import MKTOffLine
+from .models import *
+from django.forms.models import inlineformset_factory
+
 class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput)
 
 class MKTOfflineForm(forms.ModelForm):
-    canales = ['Impresos']#, 'TV', 'Radio', 'Exteriores', 'Otros']
+    canales = ['Impresos', 'TV', 'Radio', 'Exteriores', 'Otros']
     subcanales = ['Periódico Coppel']
     Objetivos_macro = ['Branding', 'Coppel comunidad', 'Performance', 'Merca Directa', 'Personalización']
     #Unidad_de_negocio = ['Retail', 'Servicios financieros', 'Atención a grupo coppel',
@@ -25,5 +27,3 @@ class MKTOfflineForm(forms.ModelForm):
     class Meta:
         model = MKTOffLine
         fields = "__all__"
-
- 

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.conf import settings
 # Create your models here.
 
 # modelo para asignarle tipo a los usuarios 
@@ -17,6 +17,7 @@ class Perfil(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 class MKTOffLine(models.Model):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # nunca borremos usuarios 
     campaña = models.CharField(max_length=60, null=False)
     objetivo_macro = models.CharField(max_length=60, null=False)
     #unidad_de_negocio = models.CharField(max_length=60, null=False)
