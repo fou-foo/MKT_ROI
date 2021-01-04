@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<form method="post" id="exceldata"  >
+<form method="post" id="exceldata"  action="{% url 'app:medios_off_line_form' %}">
     {% csrf_token %}
 <table border="1" style="width:100%" id="excel">
     <tr>
@@ -80,7 +80,7 @@ function mapeo(canal){
      document.getElementById("excel").innerHTML =  long_text; 
       </script>
        </table>  
-        <input type="submit" value="Preparar de datos">'
+        <input type="submit" value="Preparar de datos">
         </form>
  
 

@@ -5,10 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django import forms
 from .models import MKTOffLine
-from .forms import LoginForm, MKTOfflineForm
+from .forms import LoginForm
 import datetime
 from django.forms import formset_factory 
+from django.urls import reverse_lazy
 
+from django.views.decorators.csrf import csrf_protect
 
 from django.views import View
 import numpy as np 
@@ -41,13 +43,106 @@ def user_login(request):
         form = LoginForm()
     return render(request, 'app/login.html', {'form': form})
 
-
-
-from django.views.decorators.csrf import csrf_protect
-
-class MKTOfflineExcel(View):
-
+def MKTOfflineExcel(request):
+    if request.user.perfil.tipo=='medios_off_line':
+        return render(request, 'app/medios_off_line_excel.html', {'form': 1 })
+    else  :
+        return render(request, 'app/login.html', {'form': 1 })
     
+class MKTOffLineForm(View):
+    
+    def get(self, request):
+        if request.user.perfil.tipo=='medios_off_line':
+            bolsa = request.POST #.get('exceldata')
+            forma = {}
+            for x in bolsa.keys():
+                if x != 'csrfmiddlewaretoken' :
+                    forma[x] = bolsa[x]
+            forma = list(forma.keys())
+            print('--------------')
+            forma = self.formato(forma)
+            return render(request, 'app/medios_off_line_form.html', {'form': forma })
+        else  :
+            return render(request, 'app/login.html', {'form': 1 })
+
+
+    def post(self, request):
+        if request.user.perfil.tipo=='medios_off_line':
+            bolsa = request.POST #.get('exceldata')
+            forma = {}
+            for x in bolsa.keys():
+                if x != 'csrfmiddlewaretoken' :
+                    forma[x] = bolsa[x]
+            forma = list(forma.keys())
+            forma = self.formato(forma)
+            print('----------------------')
+            print(forma)
+            return render(request, 'app/medios_off_line_form.html', {'form': forma.values() })
+        else  :
+            return render(request, 'app/login.html', {'form': 1 })
+    
+    def formato(self,  forma):
+        '''Funcion para parsear la entrada dle POST y preparala para 
+        introducirla en la DB en el modeleo definido para acada area '''
+        Objetivos_macro = ['Branding', 'Coppel comunidad', 'Performance', 'Merca Directa', 'Personalización']
+        Retail =  ['Ropa', 'Muebles', 'Zapatos']
+        Segmentos = [ 'Crédito Coppel', 'Préstamo personal', 'Coppel Pay', 'Fondo de retiro', 'Seguros (Club de Protección)',
+                       'Coppel Motos', 'Fashion Market','Comunicación interna', 'Atracción de talento', 'Plan de lealtad']
+        
+        lista = list(map(lambda x: x.split('.'), forma))
+        #print('-------lista')
+        #print(lista)
+        semimodelo = dict()
+        subcanales = list(np.unique( [ x[1] for x in lista ]))
+        # EL BUEN CASO
+        for s in subcanales:
+            for x in lista:
+                if s == x[1]:
+                    semimodelo['subcanal.'+str(s)]= { 'canal' : [x[0]], 
+                        'subcanal': [x[1]], 'objetivo_macro' : list(np.unique([ _[2] for _ in lista if _[2] in Objetivos_macro and x[1]== _[1]])), 
+                        'segmento' : list(np.unique([_[2] for _ in lista if _[2] in Segmentos+Retail and x[1]== _[1]] ))}
+        #print('--------------------semimodelo')
+        #print(semimodelo)
+        #print(',,,,,,,dictpost,,,,')
+        dict_post = []
+        for key, value in semimodelo.items():
+            n2 = len(semimodelo[key]['objetivo_macro'])
+            n1 = len(semimodelo[key]['segmento'])
+            n3 = len(semimodelo[key]['canal'])
+            n4 = len(semimodelo[key]['subcanal'])
+            for i in range(n2):
+                for j in range(n1):
+                    for k in range(n3):
+                        dict_post.append( { 'canal':semimodelo[key]['canal'][k] ,'subcanal' : semimodelo[key]['subcanal'][0], 
+                  'objetivo_macro': semimodelo[key]['objetivo_macro'][i], 'segmento': semimodelo[key]['segmento'][j]
+                 })
+        semimodelo= {}
+        print('yeah...........')
+        for i in range(len(dict_post)):
+            semimodelo[str(i)] = dict_post[i]
+        print(semimodelo)
+        #desesperacion = {}
+        #for i in semimodelo['0'].keys():
+         #   desesperacion[i] = {}
+        #for i in desesperacion.keys():
+        #    listita = []
+         #   for j in range(len(semimodelo)):
+          #      print(semimodelo[str(j)][i]) 
+          #      listita+= [semimodelo[str(j)][i]]
+          #  desesperacion[i] = listita
+        #desesperacion2 = {}
+        #for key, value in desesperacion.items():
+         #   desesperacion2[str(value)] = key
+        #print('********************')
+        #print(desesperacion2)
+        #print(len(dict_post))
+            
+        return(semimodelo)
+            # por pedos con el DTL vamos a hacer redundancia antes dle post
+
+
+
+class MKTOfflineExcel_s(View):
     def get(self, request):
         if request.user.perfil.tipo=='medios_off_line':
 
@@ -68,7 +163,7 @@ class MKTOfflineExcel(View):
         forma = self.formato(forma)
         
         if request.user.perfil.tipo=='medios_off_line':
-            return render(request, 'app/medios_off_line_form.html', {'form': forma })
+            return render(request, 'app/medios_off_line_form.html', {'form': sorted(forma.items()) })
         else  :
             return render(request, 'app/login.html', {'form': 1 })
     
@@ -98,14 +193,21 @@ class MKTOfflineExcel(View):
 
 
 @csrf_protect
+def MKTOfflineForm_s(request):
+    if request.user.perfil.tipo=='medios_off_line':
+        #ver https://stackoverflow.com/questions/50595330/django-bulk-create-createview
+                        # LO ADAPTE 
+        return render(request, 'app/medios_off_line_form.html', {'form': request.POST })
+    else  :
+        return render(request, 'app/login.html', {'form': 1 })
+
 def MKTOfflineForm(request):
     if request.user.perfil.tipo=='medios_off_line':
         #ver https://stackoverflow.com/questions/50595330/django-bulk-create-createview
                         # LO ADAPTE 
-        return render(request, 'app/medios_off_line_form.html', {'form': request.excelform })
+        return render(request, 'app/medios_off_line_form.html', {'form': request.POST })
     else  :
         return render(request, 'app/login.html', {'form': 1 })
-
 
 def MKTOfflineView_s(request):
     if request.method == "POST":
@@ -135,28 +237,4 @@ def MKTOfflineView_s(request):
         forms = [MKTOfflineForm() for _ in range(3)]
     return render(request, "app/medios_off_line_form.html", {"forms": forms})
 
-def MKTOffLineFormSet(request):
-    context = {} 
-    ConjuntoForms = modelformset_factory( MKTOfflineForm, fields=['campaña', 'objetivo_macro', 
-    'segmento', 'canal', 'subcanal', 'imicio', 'fin', 'gasto'])
-    formset = ConjuntoForms()
 
-    context['formset']=formset
-    return( render(request, 'app/medios_off_line_form.html', context))
-
-
-def formset_view(request): 
-    context ={} 
-  
-    # creating a formset and 5 instances of GeeksForm 
-    ConjuntoForms = formset_factory(MKTOfflineForm, extra = 3) 
-    formset = ConjuntoForms(request.POST or None) 
-      
-    # print formset data if it is valid 
-    if formset.is_valid(): 
-        for form in formset: 
-            print(form.cleaned_data) 
-              
-    # Add the formset to context dictionary 
-    context['formset']= formset 
-    return render(request, "app/medios_off_line_form.html", context) 

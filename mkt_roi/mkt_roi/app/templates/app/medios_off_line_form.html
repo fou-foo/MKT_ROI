@@ -1,18 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form method="POST" enctype="multipart/form-data"> 
-      
-    <!-- Management data of formset -->
-    {{ formset.management_data }} 
-  
-    <!-- Security token -->
-    {% csrf_token %} 
-  
-    <!-- Using the formset -->
-    {{ formset.as_p }} 
-      
-    <input type="submit" value="Submit"> 
-</form> 
 
+<form method="post" id="carga"   action="{% url 'app:login' %}">
+    {% csrf_token %}
+<table border="1" style="width:100%" >
+<thead>
+    <tr>
+      <th > Campaña </th>
+      <th > Objetivo macro </th>
+      <th > Segmento </th>
+      <th > Canal  </th>
+      <th > Sub canal </th>
+      <th > Inicio  </th>
+      <th > Fin </th>
+      <th > Gasto </th>
+    </tr>
+</thead>
+<tbody> 
+    <!-- check esta referencia super cool https://stackoverflow.com/questions/8018973/how-to-iterate-through-dictionary-in-a-dictionary-in-django-template-->
+{%for dict in form %}
+
+<tr> <td> <input type="text" id="campaña" name="campaña"> </td> 
+     <td> {{dict.objetivo_macro}}   </td> 
+      <td>   {{ dict.segmento}} </td>
+        <td> {{dict.canal}}</td>
+         <td> {{dict.subcanal}}  </td>  
+    <td> <input type="date" id="inicio" name="inicio"> </td> 
+    <td> <input type="date" id="fin" name="fin"> </td> 
+    <td> <input type="number" step="any" id="gasto"></input> </td></tr>
+  
+    
+{% endfor %}
+
+</tbody>  
+</table>  
+<!--<input type="submit" value="Preparar de datos">'-->
+<input type="submit" value="Preparar de datos">'
+</form>
 {% endblock %}
