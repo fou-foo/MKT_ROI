@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<form method="post" id="exceldata"  action="{% url 'app:medios_off_line_form' %}">
+<form method="post" id="exceldata"  action="{% url 'app:d' %}">
+
     {% csrf_token %}
+    <label for="name">Nombre de campaña:</label>
+    <input type="text" id="campaña" name="campaña"> 
 <table border="1" style="width:100%" id="excel">
     <tr>
       <th scope="col">  </th>

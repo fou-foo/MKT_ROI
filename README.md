@@ -19,7 +19,9 @@ CREATE USER cenic_mkt_roi WITH PASSWORD 'cenic_mkt_roi';
 ALTER ROLE cenic_mkt_roi SET client_encoding TO 'utf8';
 ALTER ROLE cenic_mkt_roi SET default_transaction_isolation TO 'read committed';
 ALTER ROLE cenic_mkt_roi SET timezone TO 'UTC';
+ALTER USER cenic_mkt_roi WITH CREATEDB;
 GRANT ALL PRIVILEGES ON DATABASE mkt_roi TO cenic_mkt_roi;
+ALTER USER cenic_mkt_roi WITH SUPERUSER; # para limpiar la DB del desmadre que hice con los modelos
 \q
 exit
 ```
@@ -44,13 +46,17 @@ conda install -c anaconda psycopg2
 #pip install django-extensions
 conda install -c conda-forge django-extensions
 conda install -c conda-forge numpy
-
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+find . -path "*/migrations/*.pyc"  -delete
+python manage.py reset_db # borrar la base 
 # copiar el repo 
 python manage.py makemigrations 
 python manage.py migrate 
 python manage.py runscript users # luego asignar los users manualmente en la vista dle admin -_-
 #django-admin startproject mkt_roi
 #python manage.py startapp app
+
+ # reset db despues de cambios en  los modleos 
 ```
 
 ### Configurar el archivo `settings.py` del proyecto Django para la conexión con [Postgres](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04)
