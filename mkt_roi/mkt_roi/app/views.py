@@ -40,25 +40,29 @@ def user_login(request):
     return render(request, 'app/login.html', {'form': form})
 
 def Menu(request):
+    print('entro al menu')
     if request.user.perfil.tipo=='medios_off_line' or request.user.perfil.tipo=='cenic' :
         return render(request, 'app/medios_off_line_index.html', {'form': 1 })
 
 def Gracias(request):
+    print('entro al gracias')
     return render( request, 'app/gracias.html', {'form': 1})
 
 def ListaCampanias(request):
     # solo el usuario que creo las campañas las puede alterar 
-    campanias = dict(Campania.objects.filter(usuario_created=request.user))
-    return render( 'app:lista_capanias.html', {'campanias': campanias})
+    
+    campanias = Campania.objects.filter(usuario_created=request.user)
+    print('..........')
+    campanias_dict = dict()
+    print(type(campanias))
+    contador=0
+    for i in campanias:
+        campanias_dict[str(contador)] = model_to_dict(i)
+        contador+=1
+    print(campanias_dict)
+    salida = campanias_dict.values()
+    return render(request , 'app/lista_capanias.html', {'campanias': salida, 'n':len(salida)})
 
-    #  campaña = Campania.objects.get(pk =pk)
-        #print('esfuerzos...................')
-    #    form = dict()
-    #    esfuerzos_pendientes = Esfuerzo.objects.filter(campania=campaña, estatus='P') 
-    #    contador=0
-    #    for i in esfuerzos_pendientes:
-    #        form[str(contador)] = model_to_dict(i)
-    #        contador+=1
   
 
 
@@ -69,10 +73,12 @@ class MKTOffLineExcel(View):
     
     def get(self, request):
         ''' construiccion de la vista del excel ''' 
+        print('entro al excel get ')
         return render(request, 'app/medios_off_line_excel.html', {'form': 1 })
 
     def post(self, request):
         ''' insert a la DB''' 
+        print(' post excel ')
         if request.user.perfil.tipo in ['medios_off_line' , 'cenic']:
             bolsa = request.POST
             forma = {}
@@ -92,7 +98,7 @@ class MKTOffLineExcel(View):
                  usuario_updated=request.user, campania=campaña_insert )
                 insert_esfuerzo.save()
             print('todos los inserts chidos  '   )
-            print(forma)
+            #print(forma)
             return redirect( 'app:update', pk=campaña_insert.id)
         else  :
             return render(request, 'app/login.html', {'form': 1 })
@@ -138,22 +144,17 @@ def formato( forma):
 class Update(View):
     
     def get(self, request, pk):
-        print('entro                       ------------------------------')
+        print('entro   update get                    ------------------------------')
         for i in request.GET  :
             print(i)
-        #campaña_id = request.GET.get('compania_id')
-        #print('mmmmmmmmmmmmmmmmmm al get llave pk ')
-        #print(pk)
         campaña = Campania.objects.get(pk =pk)
-        #print('esfuerzos...................')
         form = dict()
         esfuerzos_pendientes = Esfuerzo.objects.filter(campania=campaña, estatus='P') 
         contador=0
         for i in esfuerzos_pendientes:
             form[str(contador)] = model_to_dict(i)
             contador+=1
-        
-        #print(form)
+        print('valores viejos ')
         return render(request, 'app/update.html', {'esfuerzos':form.values() , 'campania': campaña.nombre ,'campania_id': campaña.id })
 
     def post(self, request):
@@ -161,6 +162,7 @@ class Update(View):
         #print( 'entro al post ')
         bolsa = dict(request.POST)
         util = dict()
+        print(bolsa)
         # update a la DB VAMOS A APROVECHAR QUE EN EM POST DEL HTML YA ENVIAMOS ORDENADOS LOS ELEMENTOS !!!!!!!!!!
         for k, values  in bolsa.items():
             if k in ['id', 'gasto']:
@@ -182,5 +184,3 @@ class Update(View):
             esfuerzo.save()
         print('se updeteo todo ')
         return redirect( 'app:gracias')
-
-        #return render(request, 'app/medios_off_line_excel.html', {'form': 1 })

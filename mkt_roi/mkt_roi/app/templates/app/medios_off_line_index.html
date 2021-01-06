@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+{% csrf_token %}
 <table style="width:100%">
     <tr>
         <img style="float: left;" alt=""src="{% static 'images/coppel.png' %}" >    </tr>

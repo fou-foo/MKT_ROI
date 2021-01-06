@@ -26,17 +26,17 @@
       <td>   {{ registro.segmento}} </td>
         <td> {{registro.canal}}</td>
          <td> {{registro.subcanal }}   </td>  
-    <td> <input type="date"  name="inicio">  
+    <td> <input type="date"  name="inicio" value={{registro.inicio|date:"Y-m-d"}}>  
          </td>
 
-    <td> <input type="date"  name="fin"> 
-    <td> <input type="number" step="any"  name="gasto"> </td>
+    <td>  <input type="date"  name="fin" value="{{registro.fin|date:"Y-m-d"}}"> 
+    <td> <input type="number" step="any"  name="gasto" value={{registro.gasto}}> </td>
   </tr>
 {% endfor %}
 
 </tbody>  
 </table>  
 <!--<input type="submit" value="Preparar de datos">'-->
-<input type="submit" value="Preparar de datos">'
+<input type="submit" value="Guardar de datos">'
 </form>
 {% endblock %}

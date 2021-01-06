@@ -4,9 +4,8 @@ from django.conf import settings
 # Create your models here.
 
 # modelo para asignarle tipo a los usuarios 
-class Perfil(models.Model):
-    tipo = models.CharField(max_length=25, null=False)
-    user  = models.ForeignKey(User, on_delete=models.CASCADE) # nunca borremos usuarios 
+class Perfil(User):
+    tipo = models.TextField(max_length=25, null=False)
     
     def __str__(self):
         return self.tipo
@@ -34,8 +33,8 @@ class Esfuerzo(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     estatus = models.CharField(max_length=2, null=False)
-    usuario_updated = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # nunca borremos usuarios 
-    campania = models.ForeignKey(Campania, on_delete=models.CASCADE)   
+    usuario_updated = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='usuario_creo') # nunca borremos usuarios 
+    campania = models.ForeignKey(Campania, on_delete=models.CASCADE, related_name='campania')   
 
     def __str__(self):
         return self.subcanal

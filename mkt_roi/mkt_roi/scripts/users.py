@@ -5,11 +5,7 @@ def run():
             'medicion_digital' , 'mkt_digital' , 'cenic' ]
     for area in tipo:
         print(area[::-1])
-        user = User.objects.create_user( username=area, 
-        email='antonio.garciar@coppel.com', password=area[::-1])
+        user = Perfil.objects.create_user( username=area, email='antonio.garciar@coppel.com', password=area[::-1], tipo=area )
         user.save()
-        perfil = Perfil(tipo=area, user=user)
-        perfil.save()
-        
-
+       
     print(' Fin de creacion de users')

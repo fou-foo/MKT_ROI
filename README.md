@@ -49,6 +49,7 @@ conda install -c conda-forge numpy
 find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
 find . -path "*/migrations/*.pyc"  -delete
 python manage.py reset_db # borrar la base 
+python manage.py flush 
 # copiar el repo 
 python manage.py makemigrations 
 python manage.py migrate 

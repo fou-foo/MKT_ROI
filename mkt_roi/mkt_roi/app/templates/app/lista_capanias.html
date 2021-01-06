@@ -1,11 +1,31 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<h3>Gracias</h3>
-<p>Los datos se guardarón correctamente</p>
+<h3>Su Lista de campañas</h3>
+{%if n > 0 %}
+<form method="post" name="{{campania_id}}"   action="{% url 'app:update' %}">
+    {% csrf_token %}
+
+{%for x in campanias %}
+<ul>
+    <li> <a href={% url 'app:update' pk=x.id  %} > {{x.nombre}} </a> </li> <!-- https://stackoverflow.com/questions/19428572/django-templatesyntaxerror-could-not-parse-the-remainder-->
+    
+</ul>
+{% endfor%}
+
+{% else %}
+Usted no tiene campañas registradas 
+
 <thead>
-    <tr> <td> <a href="{% url "app:menu" %}" > Ir al Menu </a>  </td> 
-        <td> <a href="{% url "app:logout" %}"  >Logout</a>     </td>
-    </tr>
-</thead>
+    <table>
+        <tr> <th> <a href="{% url "app:menu" %}" > Ir al Menu </a>  </th> 
+            <th> <a href="{% url "app:logout" %}"  >Logout</a>     </th>
+        </tr>
+    </table>
+    </thead>
+
+{% endif %}
+
 {% endblock %}
+
+

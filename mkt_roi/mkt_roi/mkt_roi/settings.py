@@ -74,7 +74,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mkt_roi.wsgi.application'
 
-
+DATE_INPUT_FORMATS = ['%Y %m %d']
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
