@@ -1,6 +1,42 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block content %}
-{{pk}}
-hola 
+
+<form method="post" name="{{campania_id}}"   action="{% url 'app:update' %}">
+    {% csrf_token %}
+<table border="1" style="width:100%" >
+<thead>
+    <tr>
+      <th > Campaña </th>
+      <th > Objetivo macro </th>
+      <th > Segmento </th>
+      <th > Canal  </th>
+      <th > Sub canal </th>
+      <th > Inicio  </th>
+      <th > Fin </th>
+      <th > Gasto </th>
+    </tr>
+</thead>
+<tbody> 
+    <!-- check esta referencia super cool https://stackoverflow.com/questions/8018973/how-to-iterate-through-dictionary-in-a-dictionary-in-django-template-->
+{%for registro in esfuerzos %}
+
+<tr> <input type="hidden" name="id" value="{{registro.id}}" >
+       <td> {{campania}} </td> 
+     <td> {{registro.objetivo_macro}}   </td> 
+      <td>   {{ registro.segmento}} </td>
+        <td> {{registro.canal}}</td>
+         <td> {{registro.subcanal }}   </td>  
+    <td> <input type="date"  name="inicio">  
+         </td>
+
+    <td> <input type="date"  name="fin"> 
+    <td> <input type="number" step="any"  name="gasto"> </td>
+  </tr>
+{% endfor %}
+
+</tbody>  
+</table>  
+<!--<input type="submit" value="Preparar de datos">'-->
+<input type="submit" value="Preparar de datos">'
+</form>
 {% endblock %}

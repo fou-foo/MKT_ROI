@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h3>Gracias</h3>
+<p>Los datos se guardarón correctamente</p>
+<thead>
+    <tr> <td> <a href="{% url "app:menu" %}" > Ir al Menu </a>  </td> 
+        <td> <a href="{% url "app:logout" %}"  >Logout</a>     </td>
+    </tr>
+</thead>
+{% endblock %}

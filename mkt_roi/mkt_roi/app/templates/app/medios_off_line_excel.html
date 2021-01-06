@@ -1,28 +1,42 @@
 {% extends 'base.html' %}
 {% block content %}
-<form method="post" id="exceldata"  action="{% url 'app:d' %}">
+<form method="post" id="exceldata"  action="{% url 'app:medios_off_line_excel' %}">
 
     {% csrf_token %}
     <label for="name">Nombre de campaña:</label>
     <input type="text" id="campaña" name="campaña"> 
 <table border="1" style="width:100%" id="excel">
+<thead>
+
     <tr>
-      <th scope="col">  </th>
-      <th scope="col">  </th>
-      <th scope="col" colspan="5">Objetivo macro </th>
-      <th scope="col" colspan="3">Retail</th>
-      <th scope="col" colspan="10"> Unidad de negocio </th>
-    </tr>
-      
+      <th scope="col"  >  </th>
+      <th scope="col"  >  </th>
+      <th scope="col" colspan="3" rowspan="2" >Objetivo macro </th>
+      <th scope="col" colspan="3" > Retail </th>
+      <th scope="col" colspan="8"> Unidad de negocio que atiende </th>
+      </tr>
+</thead>
+<tr rowspan="2">
+    <th scope="col"  >  </th>
+    <th scope="col"  >  </th>
+    <th scope="col" colspan="3"  > </th>
+    <th scope="col" colspan="3" ></th>
+    <th scope="col" colspan="4"> Sevicios Financieros  </th>
+    <th scope="col" colspan="2"> Nuevos formatos  </th>
+    <th scope="col" colspan="2"> Atención a Grupo Coppel	 </th>
+</tr>
+<tbody>      
       <script> //esta marranada fue para hacer un array que permita mandar en el post toda la data con ids faciles de identificar y meter en la DB
      var  text = '';
      var long_text =  document.getElementById("excel").innerHTML ;
 
       var columnas = [];
-      var Objetivos_macro = ['Branding', 'Coppel comunidad', 'Performance', 'Merca Directa', 'Personalización'];
+      var Objetivos_macro = ['Branding', 'Coppel comunidad', 'Performance'];//, 'Merca Directa', 'Personalización'];
       var Retail =  ['Ropa', 'Muebles', 'Zapatos']; 
-      var Segmentos = [ 'Crédito Coppel', 'Préstamo personal', 'Coppel Pay', 'Fondo de retiro', 'Seguros (Club de Protección)',
-                       'Coppel Motos', 'Fashion Market','Comunicación interna', 'Atracción de talento', 'Plan de lealtad'];
+      var Segmentos = [ 'Crédito Coppel', 'Préstamo personal', 'Coppel Pay', //Fondo de retiro',
+                         'Seguros (Club de Protección)',
+                       'Coppel Motos', 'Fashion Market',//'Comunicación interna',
+                        'Atracción de talento', 'Plan de lealtad'];
       columnas = Objetivos_macro.concat(Retail).concat(Segmentos);
       
       var Impresos=['Periódico Coppel', 'Revista Coppel', 'Tickets en tienda', 'Prensa', 'Revista Nacional'] ;// VARIAN DE AREA A AREA
@@ -82,6 +96,7 @@ function mapeo(canal){
      long_text += text; //+'<input type="submit" value="Carga de datos">';
      document.getElementById("excel").innerHTML =  long_text; 
       </script>
+</tbody>
        </table>  
         <input type="submit" value="Preparar de datos">
         </form>
