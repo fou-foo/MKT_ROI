@@ -69,10 +69,9 @@ python manage.py createsuperuser
 antonio
 antonio.garciar@coppel.com
 pass: antonio.garciar
-python manage.py runserver 0.0.0.0:8000 # test server 
-```
+python manage.py runserver 0.0.0.0:8000 # test server y lo vemos en la http://10.26.53.54:8000/admin/
 
-El archivo MKT_ROI/mkt_roi/mkt_roi
+l archivo MKT_ROI/mkt_roi/mkt_roi
 
 ```bash
 python manage.py runscript users # LOS USERS LOS TUBE QUE CREAR CON LA UI DEL ADMIN
