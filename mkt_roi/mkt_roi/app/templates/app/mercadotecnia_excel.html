@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post" id="exceldata"  action="{% url 'app:mercadotecnia_excel' %}">
+
+    {% csrf_token %}
+    <label for="name">Nombre de campaña:</label>
+    <input type="text" id="campaña" name="campaña"> 
+<table border="1" style="width:100%" id="excel">
+<thead>
+
+    <tr>
+      <th scope="col"  >  </th>
+      <th scope="col"  >  </th>
+      <th scope="col" colspan="5" rowspan="2" >Objetivo macro </th>
+      <th scope="col" colspan="3" > Retail </th>
+      <th scope="col" colspan="6"> Unidad de negocio que atiende </th>
+      </tr>
+</thead>
+<tr rowspan="2">
+    <th scope="col"  >  </th>
+    <th scope="col"  >  </th>
+    <th scope="col" colspan="5"  > </th>
+    <th scope="col" colspan="3" ></th>
+    <th scope="col" colspan="4"> Sevicios Financieros  </th>
+    <th scope="col" colspan="2"> Nuevos formatos  </th>
+ </tr>
+<tbody>      
+      <script> //esta marranada fue para hacer un array que permita mandar en el post toda la data con ids faciles de identificar y meter en la DB
+     var  text = '';
+     var long_text =  document.getElementById("excel").innerHTML ;
+
+      var columnas = [];
+      var Objetivos_macro = ['Branding', 'Coppel comunidad', 'Performance', 'Merca Directa', 'Personalización'];
+      var Retail =  ['Ropa', 'Muebles', 'Zapatos']; 
+      var Segmentos = [ 'Crédito Coppel', 'Préstamo personal', 'Seguros(Club de Protección)',
+                        'Fondo de retiro','Coppel Motos','Fashion Market'];
+      columnas = Objetivos_macro.concat(Retail).concat(Segmentos);
+      
+      var Impresos = ['Cartas','Periódico Coppel', 'Revista Coppel', 'Tickets en tienda', 'Prensa', 'Revista Nacional', 'Estado de cuenta'];
+      var TV = ['TV de paga', 'TV abierta'];
+      var Telefono = ['Llamadas', 'SMS'];
+      var Radio = ['Radio'];
+      var Comunicacion_en_tienda = ['Pantallas en micros', 'Aparador', 'Audio Ambiental', 'Banderas', 'Material POP', 'Poster Coppel', 'Poster Coppel CANADA', 'Comunicacion visual en tienda'];
+      var Otros = ['Comunicado de prensa/contenido', 'Spoke person', 'Entrevista uno a uno', ' Concursos/Sorteos', 'Trivia', 'Eventos con medios','Producto integrado', 'Fachadas en tienda', 'Patrocinios externos', 'Publicidad exterior'];
+      var subcanales = Array(Impresos.length +TV.length + Telefono.length + Radio.length+Comunicacion_en_tienda.length+
+      Otros.length  ); //ESTE ES EL BUENO
+      var inutil =[Impresos, TV, Radio, Telefono, Comunicacion_en_tienda, Otros];
+      var contador = 0;
+      for(j in inutil){
+      for( i in inutil[j]) {
+       subcanales[contador]= {'canal': mapeo(inutil[j][i]), 'columnas': columnas, 'subcanal': inutil[j][i]};
+       contador+=1;
+      }}
+
+function mapeo(canal){
+    
+    if( Impresos.includes(canal) ) return 'Impresos';
+    if( TV.includes(canal) ) return  'TV';
+    if( Radio.includes(canal) ) return  'Radio';
+    if( Telefono.includes(canal) ) return  'Telefono';
+    if( Otros.includes(canal) ) return  'Otros';
+    if( Comunicacion_en_tienda.includes(canal)) return 'Comunicación en tienda' ;
+    else return 'no jala';
+}
+    long_text+= '<tr >  <td> Canal </td> <td> Subcanal </td> '; 
+    text ='';
+    for (x in columnas){
+        text+= '<td> ' + columnas[x] + ' </td>';
+    }
+    text +='</tr>';
+    var bandera_span =true;
+    var n_canales_init = 0;//numero de elementos del primer canal 
+    var n_canales = 0;
+    for( row in subcanales ){
+        text+= '<tr> '
+            n_canales =subcanales.filter(x=> x.canal==subcanales[row].canal ).length;
+            if( n_canales != n_canales_init) bandera_span =true;
+            if( bandera_span==true){
+                text+='<td rowspan="'+ subcanales.filter(x=> x.canal==subcanales[row].canal ).length +'"> '+subcanales[row].canal+' </td> <td>'+ subcanales[row].subcanal +'</td> ';
+                for( c in subcanales[row].columnas){
+                    text+= '<td> <input type="checkbox" name="'+ subcanales[row].canal +'.'+ subcanales[row].subcanal +'.'
+                        +subcanales[row].columnas[c]+ '" value=True > </td>';
+                }
+                text+='</tr>';
+                bandera_span =false;
+            } else {
+                text+=' <td>'+ subcanales[row].subcanal +'</td> ';
+                for( c in subcanales[row].columnas){
+                    text+= '<td> <input type="checkbox" name="'+ subcanales[row].canal +'.'+ subcanales[row].subcanal +'.'+subcanales[row].columnas[c]+ '" value=True > </td>';
+                }
+                text+='</tr>';
+            }
+            n_canales_init = n_canales;
+        }
+        
+     long_text += text; //+'<input type="submit" value="Carga de datos">';
+     document.getElementById("excel").innerHTML =  long_text; 
+      </script>
+</tbody>
+       </table>  
+        <input type="submit" value="Guardar de datos">
+        </form>
+ 
+
+{% endblock %}
+
+

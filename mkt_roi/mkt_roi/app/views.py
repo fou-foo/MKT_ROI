@@ -41,8 +41,29 @@ def user_login(request):
 
 def Menu(request):
     print('entro al menu')
-    if request.user.perfil.tipo=='medios_off_line' or request.user.perfil.tipo=='cenic' :
-        return render(request, 'app/medios_off_line_index.html', {'form': 1 })
+
+
+    if request.user.perfil.tipo=='medios_en_tienda' or request.user.perfil.tipo=='cenic' :
+        return render(request, 'app/medios_en_tienda_index.html', {'form': 1 })
+        
+    #if request.user.perfil.tipo=='medios_off_line' or request.user.perfil.tipo=='cenic' :
+    #    return render(request, 'app/medios_off_line_index.html', {'form': 1 })
+
+    #if request.user.perfil.tipo=='e-marketing' or request.user.perfil.tipo=='cenic' :
+    #    return render(request, 'app/e_marketing_index.html', {'form': 1 })
+
+    #if request.user.perfil.tipo=='relaciones_publicas' or request.user.perfil.tipo=='cenic' :
+    #    return render(request, 'app/relaciones_publicas_index.html', {'form': 1 })
+
+    #if request.user.perfil.tipo=='mercadotecnia' or request.user.perfil.tipo=='cenic' :
+     #   return render(request, 'app/mercadotecnia_index.html', {'form': 1 })
+
+    #if request.user.perfil.tipo=='mkt_digital' or request.user.perfil.tipo=='cenic' :
+    #    return render(request, 'app/mkt_digital_index.html', {'form': 1 })
+
+    #if request.user.perfil.tipo=='medicion_digital' or request.user.perfil.tipo=='cenic' :
+     #   return render(request, 'app/medicion_digital_index.html', {'form': 1 })
+
 
 def Gracias(request):
     print('entro al gracias')
@@ -63,55 +84,19 @@ def ListaCampanias(request):
     salida = campanias_dict.values()
     return render(request , 'app/lista_capanias.html', {'campanias': salida, 'n':len(salida)})
 
-  
-
-
-
-class MKTOffLineExcel(View):
-    ''' esta vista se encarga de construir el excel donde mapeamos los esfuerzos de las areas es fundamental para el proyecto
-    ademas en el post insertamos los registros en las tablas con algunos campos en blanco que despues actualizamos en la vista update'''
-    
-    def get(self, request):
-        ''' construiccion de la vista del excel ''' 
-        print('entro al excel get ')
-        return render(request, 'app/medios_off_line_excel.html', {'form': 1 })
-
-    def post(self, request):
-        ''' insert a la DB''' 
-        print(' post excel ')
-        if request.user.perfil.tipo in ['medios_off_line' , 'cenic']:
-            bolsa = request.POST
-            forma = {}
-            campaña = ''
-            for x in bolsa.keys():
-                if x not in  ['csrfmiddlewaretoken' , 'campaña'] :
-                    forma[x] = bolsa[x]
-                if x == 'campaña':
-                    campaña = bolsa[x]
-            campaña_insert = Campania(nombre=campaña, usuario_created=request.user, area=request.user.perfil.tipo )
-            campaña_insert.save()
-            forma = list(forma.keys())
-            forma = formato(forma)
-            for key, value in forma.items():
-                insert_esfuerzo =Esfuerzo(objetivo_macro=value['objetivo_macro'], segmento=value['segmento'], canal=value['canal'],
-                 subcanal=value['subcanal'], inicio=None, fin=None, gasto=None, estatus='P', 
-                 usuario_updated=request.user, campania=campaña_insert )
-                insert_esfuerzo.save()
-            print('todos los inserts chidos  '   )
-            #print(forma)
-            return redirect( 'app:update', pk=campaña_insert.id)
-        else  :
-            return render(request, 'app/login.html', {'form': 1 })
-    
+   
 def formato( forma):
     '''Funcion para parsear la entrada dle POST y preparala para 
-    introducirla en la DB en el modeleo definido para acada area 
+    introducirla en la DB en el modeleo definido para cada area 
     NOS SIRVE PARA TODAS LAS AREAS !!!!!!!!!!!!!!!!!!!!'''
-    Objetivos_macro = ['Branding', 'Coppel comunidad', 'Performance', 'Merca Directa', 'Personalización']
-    Retail =  ['Ropa', 'Muebles', 'Zapatos']
-    Segmentos = [ 'Crédito Coppel', 'Préstamo personal', 'Coppel Pay', 'Fondo de retiro', 'Seguros (Club de Protección)',
-                   'Coppel Motos', 'Fashion Market','Comunicación interna', 'Atracción de talento', 'Plan de lealtad']
-    
+    #Objetivos_macro = ['Branding', 'Coppel comunidad', 'Performance', 'Merca Directa', 'Personalización']
+    #Retail =  ['Ropa', 'Muebles', 'Zapatos']
+    #Segmentos = [ 'Crédito Coppel', 'Préstamo personal', 'Coppel Pay', 'Fondo de retiro', 'Seguros (Club de Protección)',
+    #               'Coppel Motos', 'Fashion Market','Comunicación interna', 'Atracción de talento', 'Plan de lealtad']
+    Objetivos_macro = ['Branding', 'Coppel comunidad', 'Descargas' ,'Performance', 'Merca Directa', 'Personalización']
+    Retail = ['Ropa', 'Muebles', 'Zapatos']
+    Segmentos = [ 'Crédito Coppel', 'Préstamo personal', 'Coppel Pay','App Coppel', 'Abonos en línea', 'Fondo de retiro', 'Seguros (Club de Protección)','Coppel Motos', 'Fashion Market','Comunicación interna', 'Atracción de talento',
+      'Plan de lealtad','Market Place']
     lista = list(map(lambda x: x.split('.'), forma))
     semimodelo = dict()
     subcanales = list(np.unique( [ x[1] for x in lista ]))
@@ -139,6 +124,29 @@ def formato( forma):
        semimodelo[str(i)] = dict_post[i]
         
     return(semimodelo)
+
+
+def insert_db_default(post_request):
+    bolsa = post_request.POST
+    forma = {}
+    campaña = ''
+    for x in bolsa.keys():
+        if x not in  ['csrfmiddlewaretoken' , 'campaña'] :
+            forma[x] = bolsa[x]
+        if x == 'campaña':
+                campaña = bolsa[x]
+    campaña_insert = Campania(nombre=campaña, usuario_created=post_request.user, area=post_request.user.perfil.tipo )
+    campaña_insert.save()
+    forma = list(forma.keys())
+    forma = formato(forma)
+    for key, value in forma.items():
+        insert_esfuerzo =Esfuerzo(objetivo_macro=value['objetivo_macro'], segmento=value['segmento'], canal=value['canal'],
+            subcanal=value['subcanal'], inicio=None, fin=None, gasto=None, estatus='P', 
+            usuario_updated=post_request.user, campania=campaña_insert )
+        insert_esfuerzo.save()
+    print('todos los insert chidos')
+    return(campaña_insert.id)
+ 
 
 
 class Update(View):
@@ -184,3 +192,125 @@ class Update(View):
             esfuerzo.save()
         print('se updeteo todo ')
         return redirect( 'app:gracias')
+
+
+
+class MKTOffLineExcel(View):
+    ''' esta vista se encarga de construir el excel donde mapeamos los esfuerzos de las areas es fundamental para el proyecto
+    ademas en el post insertamos los registros en las tablas con algunos campos en blanco que despues actualizamos en la vista update'''
+    
+    def get(self, request):
+        ''' construiccion de la vista del excel ''' 
+        print('entro al excel get ')
+        return render(request, 'app/medios_off_line_excel.html', {'form': 1 })
+
+    def post(self, request):
+        ''' insert a la DB''' 
+        print(' post excel ')
+        if request.user.perfil.tipo in ['medios_off_line' , 'cenic']:
+            pk=insert_db_default(request)
+            return redirect( 'app:update', pk=pk)
+        else  :
+            return render(request, 'app/login.html', {'form': 1 })
+ 
+class MediosEnTiendaExcel(View):
+    ''' esta vista se encarga de construir el excel donde mapeamos los esfuerzos de las areas es fundamental para el proyecto
+    ademas en el post insertamos los registros en las tablas con algunos campos en blanco que despues actualizamos en la vista update'''
+    
+    def get(self, request):
+        ''' construiccion de la vista del excel ''' 
+        print('entro al excel get ')
+        return render(request, 'app/medios_en_tienda_excel.html', {'form': 1 })
+
+    def post(self, request):
+        ''' insert a la DB''' 
+        print(' post excel ')
+        if request.user.perfil.tipo in ['medios_en_tienda' , 'cenic']:
+            pk=insert_db_default(request)
+            return redirect( 'app:update', pk=pk)
+        else  :
+            return render(request, 'app/login.html', {'form': 1 })
+
+
+class EMarketing(View):
+    ''' esta vista se encarga de construir el excel donde mapeamos los esfuerzos de las areas es fundamental para el proyecto
+    ademas en el post insertamos los registros en las tablas con algunos campos en blanco que despues actualizamos en la vista update'''
+    
+    def get(self, request):
+        ''' construiccion de la vista del excel ''' 
+        print('entro al excel get ')
+        return render(request, 'app/e_marketing_excel.html', {'form': 1 })
+
+    def post(self, request):
+        ''' insert a la DB e-marketing''' 
+        print(' post excel ')
+        if request.user.perfil.tipo in ['e-marketing' , 'cenic']:
+            pk=insert_db_default(request)
+            return redirect( 'app:update', pk=pk)
+        else  :
+            return render(request, 'app/login.html', {'form': 1 })
+
+class RelacionesPublicas(View):
+    ''' esta vista se encarga de construir el excel donde mapeamos los esfuerzos de las areas es fundamental para el proyecto
+    ademas en el post insertamos los registros en las tablas con algunos campos en blanco que despues actualizamos en la vista update'''
+    
+    def get(self, request):
+        ''' construiccion de la vista del excel ''' 
+        print('entro al excel getrel publicas ')
+        return render(request, 'app/relaciones_publicas_excel.html', {'form': 1 })
+
+    def post(self, request):
+        ''' insert a la DB''' 
+        print(' post excel ')
+        if request.user.perfil.tipo in ['relaciones_publicas' , 'cenic']:
+            pk=insert_db_default(request)
+            return redirect( 'app:update', pk=pk)
+ 
+class Mercadotecnia(View):
+    ''' esta vista se encarga de construir el excel donde mapeamos los esfuerzos de las areas es fundamental para el proyecto
+    ademas en el post insertamos los registros en las tablas con algunos campos en blanco que despues actualizamos en la vista update'''
+    
+    def get(self, request):
+        ''' construiccion de la vista del excel ''' 
+        print('entro al excel get mercadotecnia')
+        return render(request, 'app/mercadotecnia_excel.html', {'form': 1 })
+
+    def post(self, request):
+        ''' insert a la DB''' 
+        print(' post excel  mercadotecnia')
+        print(' post excel ')
+        if request.user.perfil.tipo in ['mercadotecnia' , 'cenic']:
+            pk=insert_db_default(request)
+            return redirect( 'app:update', pk=pk)
+
+class MedicionDigital(View):
+    ''' esta vista se encarga de construir el excel donde mapeamos los esfuerzos de las areas es fundamental para el proyecto
+    ademas en el post insertamos los registros en las tablas con algunos campos en blanco que despues actualizamos en la vista update'''
+    
+    def get(self, request):
+        ''' construiccion de la vista del excel ''' 
+        print('entro al excel get medicion digital')
+        return render(request, 'app/medicion_digital_excel.html', {'form': 1 })
+
+    def post(self, request):
+        ''' insert a la DB''' 
+        print(' post excel medicion digital')
+        if request.user.perfil.tipo in ['medicion_digital' , 'cenic']:
+            pk=insert_db_default(request)
+            return redirect( 'app:update', pk=pk)
+
+class MKtDigital(View):
+    ''' esta vista se encarga de construir el excel donde mapeamos los esfuerzos de las areas es fundamental para el proyecto
+    ademas en el post insertamos los registros en las tablas con algunos campos en blanco que despues actualizamos en la vista update'''
+    
+    def get(self, request):
+        ''' construiccion de la vista del excel ''' 
+        print('entro al excel get mkt digital')
+        return render(request, 'app/mkt_digital_excel.html', {'form': 1 })
+
+    def post(self, request):
+        ''' insert a la DB''' 
+        print(' post excel mkt digital')
+        if request.user.perfil.tipo in ['mkt_digital' , 'cenic']:
+            pk=insert_db_default(request)
+            return redirect( 'app:update', pk=pk)

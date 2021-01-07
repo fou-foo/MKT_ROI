@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post" id="exceldata"  action="{% url 'app:relaciones_publicas_excel' %}">
+
+    {% csrf_token %}
+    <label for="name">Nombre de campaña:</label>
+    <input type="text" id="campaña" name="campaña"> 
+<table border="1" style="width:100%" id="excel">
+<thead>
+
+    <tr>
+      <th scope="col"  >  </th>
+      <th scope="col"  >  </th>
+      <th scope="col" colspan="2" rowspan="2" >Objetivo macro </th>
+      <th scope="col" colspan="3" > Retail </th>
+      <th scope="col" colspan="6"> Unidad de negocio que atiende </th>
+      </tr>
+</thead>
+<tr rowspan="2">
+    <th scope="col"  >  </th>
+    <th scope="col"  >  </th>
+    <th scope="col" colspan="2"  > </th>
+    <th scope="col" colspan="3" ></th>
+    <th scope="col" colspan="5"> Sevicios Financieros  </th>
+    <th scope="col" colspan="1"> Atención a Grupo Coppel	 </th>
+</tr>
+<tbody>      
+      <script> //esta marranada fue para hacer un array que permita mandar en el post toda la data con ids faciles de identificar y meter en la DB
+     var  text = '';
+     var long_text =  document.getElementById("excel").innerHTML ;
+
+      var columnas = [];
+      var Objetivos_macro = ['Branding', 'Coppel comunidad'];
+      var Retail =  ['Ropa', 'Muebles', 'Zapatos']; 
+      var Segmentos = [ 'Crédito Coppel', 'Préstamo personal', 'Coppel Pay', 'Seguros(Club de Protección)',
+                        'Fondo de retiro','Plan de lealtad'];
+      columnas = Objetivos_macro.concat(Retail).concat(Segmentos);
+      
+      var OtrosOnline = ['Influencers']; //online
+      var OtrosOffline = ['Trivia','Eventos con medios','Agencia RRPP']; //offline
+      var subcanales = Array(OtrosOnline.length +OtrosOffline.length ); //ESTE ES EL BUENO
+      var inutil =[  OtrosOnline, OtrosOffline ];
+      var contador = 0;
+      for(j in inutil){
+      for( i in inutil[j]) {
+       subcanales[contador]= {'canal': mapeo(inutil[j][i]), 'columnas': columnas, 'subcanal': inutil[j][i]};
+       contador+=1;
+      }}
+
+function mapeo(canal){
+    
+    if( OtrosOnline.includes(canal) ) return 'Otros Online';
+    if( OtrosOffline.includes(canal) ) return  'Otros Offline';
+    else return 'no jala';
+}
+    long_text+= '<tr >  <td> Canal </td> <td> Subcanal </td> '; 
+    text ='';
+    for (x in columnas){
+        text+= '<td> ' + columnas[x] + ' </td>';
+    }
+    text +='</tr>';
+    var bandera_span =true;
+    var n_canales_init = 0;//numero de elementos del primer canal 
+    var n_canales = 0;
+    for( row in subcanales ){
+        text+= '<tr> '
+            n_canales =subcanales.filter(x=> x.canal==subcanales[row].canal ).length;
+            if( n_canales != n_canales_init) bandera_span =true;
+            if( bandera_span==true){
+                text+='<td rowspan="'+ subcanales.filter(x=> x.canal==subcanales[row].canal ).length +'"> '+subcanales[row].canal+' </td> <td>'+ subcanales[row].subcanal +'</td> ';
+                for( c in subcanales[row].columnas){
+                    text+= '<td> <input type="checkbox" name="'+ subcanales[row].canal +'.'+ subcanales[row].subcanal +'.'
+                        +subcanales[row].columnas[c]+ '" value=True > </td>';
+                }
+                text+='</tr>';
+                bandera_span =false;
+            } else {
+                text+=' <td>'+ subcanales[row].subcanal +'</td> ';
+                for( c in subcanales[row].columnas){
+                    text+= '<td> <input type="checkbox" name="'+ subcanales[row].canal +'.'+ subcanales[row].subcanal +'.'+subcanales[row].columnas[c]+ '" value=True > </td>';
+                }
+                text+='</tr>';
+            }
+            n_canales_init = n_canales;
+        }
+        
+     long_text += text; //+'<input type="submit" value="Carga de datos">';
+     document.getElementById("excel").innerHTML =  long_text; 
+      </script>
+</tbody>
+       </table>  
+        <input type="submit" value="Guardar de datos">
+        </form>
+ 
+
+{% endblock %}
+
+
