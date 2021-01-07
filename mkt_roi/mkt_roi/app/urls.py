@@ -12,7 +12,7 @@ urlpatterns = [
   #path('e_marketing_excel/', views.EMarketing.as_view(), name='e_marketing_excel'), 
   #path('relaciones_publicas_excel/', views.RelacionesPublicas.as_view(), name='relaciones_publicas_excel'), 
   #path('mercadotecnia_excel/', views.Mercadotecnia.as_view(), name='mercadotecnia_excel'), 
-  #path('medicion_digital_excel/', views.MedicionDigital.as_view(), name='medicion_digital_excel'), 
+  path('medicion_digital_excel/', views.MedicionDigital.as_view(), name='medicion_digital_excel'), 
   #path('mkt_digital_excel/', views.MKtDigital.as_view(), name='mkt_digital_excel'), 
 
 

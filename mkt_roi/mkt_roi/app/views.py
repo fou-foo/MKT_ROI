@@ -61,8 +61,8 @@ def Menu(request):
     #if request.user.perfil.tipo=='mkt_digital' or request.user.perfil.tipo=='cenic' :
     #    return render(request, 'app/mkt_digital_index.html', {'form': 1 })
 
-    #if request.user.perfil.tipo=='medicion_digital' or request.user.perfil.tipo=='cenic' :
-     #   return render(request, 'app/medicion_digital_index.html', {'form': 1 })
+    if request.user.perfil.tipo=='medicion_digital' or request.user.perfil.tipo=='cenic' :
+        return render(request, 'app/medicion_digital_index.html', {'form': 1 })
 
 
 def Gracias(request):
@@ -129,6 +129,7 @@ def formato( forma):
 def insert_db_default(post_request):
     bolsa = post_request.POST
     forma = {}
+    #print(bolsa )
     campaña = ''
     for x in bolsa.keys():
         if x not in  ['csrfmiddlewaretoken' , 'campaña'] :
@@ -140,11 +141,15 @@ def insert_db_default(post_request):
     forma = list(forma.keys())
     forma = formato(forma)
     for key, value in forma.items():
+        #print('...................')
+        #print(value)
+        #print(key)
         insert_esfuerzo =Esfuerzo(objetivo_macro=value['objetivo_macro'], segmento=value['segmento'], canal=value['canal'],
             subcanal=value['subcanal'], inicio=None, fin=None, gasto=None, estatus='P', 
             usuario_updated=post_request.user, campania=campaña_insert )
         insert_esfuerzo.save()
-    print('todos los insert chidos')
+    #print('todos los insert chidos')
+    #print(forma.values())
     return(campaña_insert.id)
  
 
