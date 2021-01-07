@@ -46,20 +46,20 @@ def Menu(request):
     if request.user.perfil.tipo=='medios_en_tienda' or request.user.perfil.tipo=='cenic' :
         return render(request, 'app/medios_en_tienda_index.html', {'form': 1 })
         
-    #if request.user.perfil.tipo=='medios_off_line' or request.user.perfil.tipo=='cenic' :
-    #    return render(request, 'app/medios_off_line_index.html', {'form': 1 })
+    if request.user.perfil.tipo=='medios_off_line' or request.user.perfil.tipo=='cenic' :
+        return render(request, 'app/medios_off_line_index.html', {'form': 1 })
 
-    #if request.user.perfil.tipo=='e-marketing' or request.user.perfil.tipo=='cenic' :
-    #    return render(request, 'app/e_marketing_index.html', {'form': 1 })
+    if request.user.perfil.tipo=='e-marketing' or request.user.perfil.tipo=='cenic' :
+        return render(request, 'app/e_marketing_index.html', {'form': 1 })
 
-    #if request.user.perfil.tipo=='relaciones_publicas' or request.user.perfil.tipo=='cenic' :
-    #    return render(request, 'app/relaciones_publicas_index.html', {'form': 1 })
+    if request.user.perfil.tipo=='relaciones_publicas' or request.user.perfil.tipo=='cenic' :
+        return render(request, 'app/relaciones_publicas_index.html', {'form': 1 })
 
-    #if request.user.perfil.tipo=='mercadotecnia' or request.user.perfil.tipo=='cenic' :
-     #   return render(request, 'app/mercadotecnia_index.html', {'form': 1 })
+    if request.user.perfil.tipo=='mercadotecnia' or request.user.perfil.tipo=='cenic' :
+        return render(request, 'app/mercadotecnia_index.html', {'form': 1 })
 
-    #if request.user.perfil.tipo=='mkt_digital' or request.user.perfil.tipo=='cenic' :
-    #    return render(request, 'app/mkt_digital_index.html', {'form': 1 })
+    if request.user.perfil.tipo=='mkt_digital' or request.user.perfil.tipo=='cenic' :
+        return render(request, 'app/mkt_digital_index.html', {'form': 1 })
 
     if request.user.perfil.tipo=='medicion_digital' or request.user.perfil.tipo=='cenic' :
         return render(request, 'app/medicion_digital_index.html', {'form': 1 })
