@@ -4,22 +4,29 @@
 {% csrf_token %}
 
 
-<h2>Hola </h2>
+<h1>Hola </h1>
 <p>
 {{request.user.first_name}} {{request.user.last_name}} bienvenido al aplicativo de captura de información para el área de {{request.user.perfil.tipo}}. 
 </p>
 
-
-<table style=" margin: 0 auto; width: 50%;">
+ &nbsp;
+<table style=" margin: 0 auto; width: 55%;" >
     {% if request.user.is_authenticated %}
     <thead>
-    <tr> <th colspan="3" class="texto_cen"> <h4>¿ Qué actividad deseas realizar ? </h4> </th>        </tr>
+    <tr> <th colspan="3" class="texto_cen"> <h2>¿ Qué actividad desea realizar ? </h2> </th>        </tr>
     </thead>
     <tbody>
     <tr> <td class='texto_izq'> <a href="{% url "app:medios_off_line_excel" %}"  >Carga de esfuerzos </a>  </td> 
-        <td>    <p>   </p></td>
+        <td>     &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  </td>
         <td class='texto_der;'> <a href="{% url "app:lista_campanias" %}"  >Consulta o corrección de esfuerzos anteriores </a> </td>  
     </tr>
+    <tr>                                                                                       
+        <td>     &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; </td>  <td>     &nbsp;  &nbsp;  &nbsp;  &nbsp; </td> <td>    &nbsp;  &nbsp;  &nbsp;  &nbsp; </td>
+    </tr>
+    <tr>                                                                                       
+        <td>     &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; </td>  <td>     &nbsp;  &nbsp;  &nbsp;  &nbsp; </td> <td>    &nbsp;  &nbsp;  &nbsp;  &nbsp; </td>
+    </tr>
+   
     <tr>  <td class='texto_izq;'> <a href="{% url "app:logout" %}"  > <b>Cerrar sesión </b></a>  </td> 
          <td></td>
     </tr>
@@ -27,5 +34,5 @@
     {% endif %}
     
 </table>
-<div id="bottom-right"> <b class='texto_izq'> Powered by </b> <img style="float: right;" alt=""src="{% static 'images/cenic.png' %}">   </p> </div> 
+<div id="bottom-right"> <b class='texto_izq'> Powered by   &nbsp;  &nbsp; </b> <img style="float: right;" alt=""src="{% static 'images/cenic.png' %}">   </p> </div> 
 {% endblock %}

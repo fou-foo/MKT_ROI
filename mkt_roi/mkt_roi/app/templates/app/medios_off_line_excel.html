@@ -3,10 +3,15 @@
 <form method="post" id="exceldata"  action="{% url 'app:medios_off_line_excel' %}">
 
     {% csrf_token %}
-    <label for="name">Nombre de campaña:</label>
-    <input type="text" id="campaña" name="campaña"> 
-<table border="1" style="width:100%" id="excel">
-<thead>
+    <label for="name" class="texto_der">Nombre de campaña :     &nbsp; </label> 
+    <div style="overflow: hidden; padding-right: .5em;">
+        <input type="text" id="campaña" name="campaña" style="width: 20%;">  
+     </div>    
+     <p> &nbsp; 
+        &nbsp; 
+     </p>
+<table style="width:100%; border: 1px solid #5b87fa" id="excel">
+<thead class="excel_header">
 
     <tr>
       <th scope="col"  >  </th>
@@ -16,7 +21,7 @@
       <th scope="col" colspan="8"> Unidad de negocio que atiende </th>
       </tr>
 </thead>
-<tr rowspan="2">
+<tr rowspan="2" class="excel_header">
     <th scope="col"  >  </th>
     <th scope="col"  >  </th>
     <th scope="col" colspan="3"  > </th>
@@ -62,7 +67,7 @@ function mapeo(canal){
     if( Otros.includes(canal) ) return  'Otros';
     else return 'no jala';
 }
-    long_text+= '<tr >  <td> Canal </td> <td> Subcanal </td> '; 
+    long_text+= '<tr class="excel_header">  <td> Canal </td> <td> Subcanal </td> '; 
     text ='';
     for (x in columnas){
         text+= '<td> ' + columnas[x] + ' </td>';
@@ -76,17 +81,17 @@ function mapeo(canal){
             n_canales =subcanales.filter(x=> x.canal==subcanales[row].canal ).length;
             if( n_canales != n_canales_init) bandera_span =true;
             if( bandera_span==true){
-                text+='<td rowspan="'+ subcanales.filter(x=> x.canal==subcanales[row].canal ).length +'"> '+subcanales[row].canal+' </td> <td>'+ subcanales[row].subcanal +'</td> ';
+                text+='<td class="excel_row" rowspan="'+ subcanales.filter(x=> x.canal==subcanales[row].canal ).length +'"> '+subcanales[row].canal+' </td> <td class="excel_row">'+ subcanales[row].subcanal +'</td> ';
                 for( c in subcanales[row].columnas){
-                    text+= '<td> <input type="checkbox" name="'+ subcanales[row].canal +'.'+ subcanales[row].subcanal +'.'
+                    text+= '<td class="center-check-box" > <input type="checkbox" name="'+ subcanales[row].canal +'.'+ subcanales[row].subcanal +'.'
                         +subcanales[row].columnas[c]+ '" value=True > </td>';
                 }
                 text+='</tr>';
                 bandera_span =false;
             } else {
-                text+=' <td>'+ subcanales[row].subcanal +'</td> ';
+                text+=' <td class="excel_row">'+ subcanales[row].subcanal +'</td> ';
                 for( c in subcanales[row].columnas){
-                    text+= '<td> <input type="checkbox" name="'+ subcanales[row].canal +'.'+ subcanales[row].subcanal +'.'+subcanales[row].columnas[c]+ '" value=True > </td>';
+                    text+= '<td class="excel_cuadro" > <input type="checkbox" name="'+ subcanales[row].canal +'.'+ subcanales[row].subcanal +'.'+subcanales[row].columnas[c]+ '" value=True > </td>';
                 }
                 text+='</tr>';
             }

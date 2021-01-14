@@ -4,11 +4,16 @@ body {
     margin:0;
     padding:0;
     font-family:  'Roboto';
-    font-size: 21px;
+    font-size: 25px;
+    background-color: #E8F0F6;
+    font-style: bold;
+   
 }
 
 div {
+    font-family:  'Roboto';
     background-color: #E8F0F6;
+    font-style: bold;
 }
 
 p {
@@ -28,7 +33,7 @@ a:hover {
 h1, h2, h3, h4, h5 , h6 { font-family:  'Roboto'; color: #1A69AA }
 
 h1 {
-    border-bottom:1px solid #bbb;
+   
     padding:0 0 10px 0;
     margin:10px 0 20px 0;
 }
@@ -58,6 +63,7 @@ ol {
     margin-left:10%;
     position: relative;
     text-align: right;
+    text-shadow: #1866CE;
 }
 
 #header ul.menu {
@@ -287,15 +293,21 @@ img.user-detail {
 }
 
 .texto_izq {
-    text-align: left; vertical-align: middle;
+    text-align: left;
+    vertical-align: middle;
+    font-style: bold;
 }
 
 .texto_der {
-    text-align: right; vertical-align: middle;
+    text-align: right; 
+    vertical-align: middle;
+    font-style: bold;
 }
 
 .texto_cen{
-    text-align: center; vertical-align: middle;
+    text-align: center; 
+    vertical-align: middle;
+    font-style: bold;
 }
 
 
@@ -311,4 +323,56 @@ img.user-detail {
     right: 0;
     bottom: 0;
     position: absolute;
+    font-family:  'Roboto';
+    font-size: 20px;
 }
+
+
+/* esto la neta hay que hacerlo con bootstrap SOLO ES PARA SALIR DEL PASO EN LA PRESENTACION-DEMO */ 
+
+.excel_header{
+    text-align: center; 
+    vertical-align: middle;
+    font-style: bold;
+    background-color: #5B95FA;
+    color: #ffffff;
+   
+}
+.excel_row{
+    text-align: center; 
+    vertical-align: middle;
+    font-style: bold;
+    background-color: #5ba2fa;
+    color: #ffffff;
+   
+}
+/* checar esto esta mamalo https://codepen.io/sol_b/pen/ZedYya 
+https://stackoverflow.com/questions/43274765/custom-checkbox-tick */
+
+.excel_cuadro
+{
+    text-align: center;
+    vertical-align: middle;
+    background-color: #BDD9FD;
+
+  /* center checkbox vertically */
+}
+.center-check-box{
+    text-align:center; 
+    vertical-align:middle;
+    background-color: #BDD9FD;
+
+}
+
+
+}
+/*
+td, th {
+    border: 1px solid #5b87fa;
+    padding: 0.5rem;
+  }
+
+table {
+    border-collapse: collapse;
+  }
+ */ 

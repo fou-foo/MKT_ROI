@@ -1,13 +1,41 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<h3>Gracias</h3>
-<p>Los datos se guardarón correctamente</p>
-<thead>
-<table>
-    <tr> <th> <a href="{% url "app:menu" %}" > Ir al Menu </a>  </th> 
-        <th> <a href="{% url "app:logout" %}"  >Logout</a>     </th>
+
+
+
+
+<table style=" margin: 0 auto; width: 30%;" >
+    {% if request.user.is_authenticated %}
+    <thead>
+    <tr> <th colspan="3" class="texto_cen"> <h2>Gracias ! </h2>  Los datos se guardarón correctamente 
+         </th>        </tr>
+    </thead>
+    <tbody>
+        <tr>                                                                                       
+            <td>        &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; </td>  <td>     &nbsp;  &nbsp;  &nbsp;  &nbsp; </td> <td>    &nbsp;  &nbsp;  &nbsp;  &nbsp; </td>
+        </tr>
+        <tr>                                                                                       
+            <td>        &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; </td>  <td>     &nbsp;  &nbsp;  &nbsp;  &nbsp; </td> <td>    &nbsp;  &nbsp;  &nbsp;  &nbsp; </td>
+        </tr>
+        <tr>                                                                                       
+            <td>        &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; </td>  <td>     &nbsp;  &nbsp;  &nbsp;  &nbsp; </td> <td>    &nbsp;  &nbsp;  &nbsp;  &nbsp; </td>
+        </tr>
+           
+    <tr> <td class='texto_izq'> <a href="{% url "app:menu" %}" > Ir al Menu </a>    </td> 
+        <td>       &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  </td>
+        <td class='texto_der;'> <a href="{% url "app:logout" %}"  >Cerrar sesión  </a>  </td>  
     </tr>
+    <tr>                                                                                       
+        <td>        &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; </td>  <td>     &nbsp;  &nbsp;  &nbsp;  &nbsp; </td> <td>    &nbsp;  &nbsp;  &nbsp;  &nbsp; </td>
+    </tr>
+    <tr>                                                                                       
+        <td>       &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; </td>  <td>     &nbsp;  &nbsp;  &nbsp;  &nbsp; </td> <td>    &nbsp;  &nbsp;  &nbsp;  &nbsp; </td>
+    </tr>
+   
+    </tbody>
+    {% endif %}
+    
 </table>
-</thead>
+<div id="bottom-right"> <b class='texto_izq'> Powered by   &nbsp;  &nbsp; </b> <img style="float: right;" alt=""src="{% static 'images/cenic.png' %}">   </p> </div> 
 {% endblock %}

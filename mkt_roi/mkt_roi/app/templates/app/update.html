@@ -3,8 +3,8 @@
 
 <form method="post" name="{{campania_id}}"   action="{% url 'app:update' %}">
     {% csrf_token %}
-<table border="1" style="width:100%" >
-<thead>
+<table style="width:100%; border: 1px solid #5b87fa"  style="width:100%" >
+<thead class="excel_header">
     <tr>
       <th > Campaña </th>
       <th > Objetivo macro </th>
@@ -21,16 +21,16 @@
 {%for registro in esfuerzos %}
 
 <tr> <input type="hidden" name="id" value="{{registro.id}}" >
-       <td> {{campania}} </td> 
-     <td> {{registro.objetivo_macro}}   </td> 
-      <td>   {{ registro.segmento}} </td>
-        <td> {{registro.canal}}</td>
-         <td> {{registro.subcanal }}   </td>  
-    <td> <input type="date"  name="inicio" value={{registro.inicio|date:"Y-m-d"}}>  
+       <td class="excel_row"> {{campania}} </td> 
+       <td class="excel_row"> {{registro.objetivo_macro}}   </td> 
+       <td  class="excel_row">   {{ registro.segmento}} </td>
+       <td  class="excel_row"> {{registro.canal}}</td>
+       <td  class="excel_row"> {{registro.subcanal }}   </td>  
+    <td  class="excel_cuadro" > <input type="date"  name="inicio" value={{registro.inicio|date:"Y-m-d"}}>  
          </td>
 
-    <td>  <input type="date"  name="fin" value="{{registro.fin|date:"Y-m-d"}}"> 
-    <td> <input type="number" step="any"  name="gasto" value={{registro.gasto}}> </td>
+    <td class="excel_cuadro">  <input type="date"  name="fin" value="{{registro.fin|date:"Y-m-d"}}"> 
+    <td class="excel_cuadro"> <input type="number" step="any"  name="gasto" value={{registro.gasto}}> </td>
   </tr>
 {% endfor %}
 
