@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Log-in{% endblock %}
 {% block content %}
-<h1> Iniciar sesión </h1>
-<table style="width:100%">
-    <tr> <td class='textp_cen'>   Favor introducir los datos requeridos, en caso de no contar con acceso al aplicativo póngase en contacto con fulanito@coppel.com </td> </tr>
-</table>
-<form method="post">
+<h1> Inicio de sesión </h1>
+<p>
+
+</p>
+<p class='texto_divisionCD'>   Favor de introducir los datos requeridos, en caso de no contar con acceso al aplicativo póngase en contacto con antonio.garciar@coppel.com  </p>
+
+<form method="post" style="margin: 0 auto; width:250px;">
 {{ form.as_p }}
 {% csrf_token %}
-<p><input type="submit" value="Log in"></p>
+<p><input type="submit" value="Iniciar sesión"></p>
 </form>
 {% endblock %}

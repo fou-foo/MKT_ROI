@@ -2,38 +2,30 @@
 {% load static %}
 {% block content %}
 {% csrf_token %}
-<table style="width:100%">
-    <tr>
-        <img style="float: left;" alt=""src="{% static 'images/coppel.png' %}" >    </tr>
-   </tr>
-</table> 
-<h1>Medios off line</h1>
 
-<h2>Bienvenido </h2>
-<h3> Que se rife Edmundo aqui  Lorem Ipsum</h3>
-<p>"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."</p>
 
-<table style="width:100%">
+<h2>Hola </h2>
+<p>
+{{request.user.first_name}} {{request.user.last_name}} bienvenido al aplicativo de captura de información para el área de {{request.user.perfil.tipo}}. 
+</p>
+
+
+<table style=" margin: 0 auto; width: 50%;">
     {% if request.user.is_authenticated %}
-    <h4>Menu</h4>
-    <tr> <td class='texto_izq'>Hola {{ request.user.first_name }} </td> 
-       </tr>
-
+    <thead>
+    <tr> <th colspan="3" class="texto_cen"> <h4>¿ Qué actividad deseas realizar ? </h4> </th>        </tr>
+    </thead>
+    <tbody>
     <tr> <td class='texto_izq'> <a href="{% url "app:medios_off_line_excel" %}"  >Carga de esfuerzos </a>  </td> 
+        <td>    <p>   </p></td>
         <td class='texto_der;'> <a href="{% url "app:lista_campanias" %}"  >Consulta o corrección de esfuerzos anteriores </a> </td>  
+    </tr>
+    <tr>  <td class='texto_izq;'> <a href="{% url "app:logout" %}"  > <b>Cerrar sesión </b></a>  </td> 
+         <td></td>
+    </tr>
+    </tbody>
     {% endif %}
     
 </table>
-<p>
-
-
-</p>
-<p>
-
-</p>
-<table style="width:100%">
-    <tr>  <td class='texto_der;'> <a href="{% url "app:logout" %}"  > <b>Logout </b></a>  </td> 
-        <td class='texto_'> Powered by <img style="float: right;" alt=""src="{% static 'images/cenic.png' %}">   </td>
-    </tr>
-</table>
+<div id="bottom-right"> <b class='texto_izq'> Powered by </b> <img style="float: right;" alt=""src="{% static 'images/cenic.png' %}">   </p> </div> 
 {% endblock %}

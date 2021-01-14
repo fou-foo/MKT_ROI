@@ -3,6 +3,8 @@
 body {
     margin:0;
     padding:0;
+    font-family:  'Roboto';
+    font-size: 21px;
 }
 
 div {
@@ -22,7 +24,8 @@ a:hover {
     color:#00a74f;
 }
 
-h1, h2, h3, h4, h5 , h6 { font-family: 'Muli', 'Roboto'; color: #1A69AA }
+
+h1, h2, h3, h4, h5 , h6 { font-family:  'Roboto'; color: #1A69AA }
 
 h1 {
     border-bottom:1px solid #bbb;
@@ -39,20 +42,22 @@ ol {
 }
 
 #header {
-    padding:10px 100px;
-    font-size: 60px;
-    background:#FDDD31;
+    padding:20px 50px;
+    font-size: 50px;
+    background:#FDE93B;
     color:#1866AE;
     border-bottom:4px solid #1866AE;
     overflow:auto;
 }
 
 #header .logo {
-    font-family: 'Muli', 'Roboto';
-    float:left;
+    font-family:  'Roboto';
+    float:right;
     color:#1866AE;
-    font-size:40px;
-    margin-right:10%;
+    font-size:35px;
+    margin-left:10%;
+    position: relative;
+    text-align: right;
 }
 
 #header ul.menu {
@@ -120,6 +125,8 @@ input[type=submit], a.button {
     font-size:14px;
     text-transform:uppercase;
 }
+
+
 .errorlist {
     color:#cc0033;
     float:left;
@@ -289,4 +296,19 @@ img.user-detail {
 
 .texto_cen{
     text-align: center; vertical-align: middle;
+}
+
+
+.texto_divisionCD{
+    vertical-align: middle; 
+    font-style: bold;
+}
+
+/* fondo */
+
+#bottom-right
+{
+    right: 0;
+    bottom: 0;
+    position: absolute;
 }
