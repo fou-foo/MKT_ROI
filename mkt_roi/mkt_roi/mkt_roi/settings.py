@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+import os 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,13 +25,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'xxvh$67y+9tqb%00vo+ga%n4bg=i3j+&&k)b70$8#85)md^1wi'
+#SECRET_KEY = 'xxvh$67y+9tqb%00vo+ga%n4bg=i3j+&&k)b70$8#85)md^1wi'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ['DEBUG'] == 'True'
 
-ALLOWED_HOSTS = ['*']
-
+#ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'rmf2gcp.appspot.com',  #dominio de app engine
+    '127.0.0.1' , #local testing 
+]
 
 # Application definition
 
@@ -89,11 +95,12 @@ DATE_INPUT_FORMATS = ['%Y %m %d']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mkt_roi',
-        'USER': 'cenic_mkt_roi',
-        'PASSWORD': 'cenic_mkt_roi',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'HOST': os.environ['DB_HOST'],
+      'PORT': os.environ['DB_PORT'],
+      'NAME': os.environ['DB_NAME'],
+      'USER': os.environ['DB_USER'],
+      'PASSWORD': os.environ['DB_PASSWORD']
+
     }
 }
 
@@ -135,6 +142,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
+STATIC_URL = os.environ['STATIC_URL']
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mkt_roi_static')
 
+STATICFILES_DIRS = [
+  # TODO: configure the name and path to your development static directory
+    os.path.join(BASE_DIR, 'static'), # static directory (in the top level directory) for local testing
+]
 LOGOUT_URL = 'logout2/'

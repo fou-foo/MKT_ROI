@@ -6,14 +6,21 @@ Aplicativo para captura de información de los esfuerzos de MKT de Coppel.
 
 ## Set up 
 
-En desarrollo estamos usando Ubuntu 20.04, en producción estamos usando Ubuntu 18.XX .
+Basicamente segui esta [guía](https://codeburst.io/beginners-guide-to-deploying-a-django-postgresql-project-on-google-cloud-s-flexible-app-engine-e3357b601b91). 
 
-Vamos a usar PostgreSQL, aprovechando que ya se tiene en producción y pues es medio estándar en la industria. 
 
-Installar PostgreSQL y set up Django en [dev.](https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-django-application-on-ubuntu-14-04)
+Con PostgreSQL 12
+
+-   500Gb de SSD
+-   1 vCPU
+-   3.75Gb RAM
+
+El tipo (tamaño) de la maquina y capacidad en disco se pueden cambiar.
+
+En Oregon, con backups de 12-4 am la clave del user `postgres` es `369analytics`, con el Cloud Shell.
+En este punto se crea otro usser que es el que crea la applicación.
 
 ```bash 
-sudo apt-get install postgresql postgresql-contrib
 sudo su - postgres
 psql
 CREATE DATABASE mkt_roi;
@@ -27,6 +34,38 @@ ALTER USER cenic_mkt_roi WITH SUPERUSER; # para limpiar la DB del desmadre que h
 \q
 exit
 ```
+
+Se instala y configura la [SDK](https://cloud.google.com/sdk/docs/quickstart#deb) de GCP.
+
+Para configurar las variables de ambiente fui al penultimo paso del tutorial y se tubo que checar la parte de la conexion a la DB con el [SQL proxy](https://cloud.google.com/sql/docs/postgres/sql-proxy). Para lo cualse creo un service [account](https://cloud.google.com/sql/docs/postgres/sql-proxy#create-service-account) que genero el archivo  `mkt_roi_db_key.jason` y se prende con la linea:
+
+Tuve que matar lo que estaba escuchando en mi local en la 127.0.0.1 
+en particular el cupsd y cambiar el hostname de mi postgres local como dice [aqui](https://stackoverflow.com/a/64121220/5484791).
+
+
+```bash 
+sudo systemctl disable cups.socket cups.path cups.service
+sudo systemctl kill --signal=SIGKILL cups.service
+sudo systemctl stop cups.socket cups.path
+gcloud init
+gcloud auth login
+./cloud_sql_proxy -instances=rmf2gcp:us-west1:mktroidb=tcp:5432
+./cloud_sql_proxy -credential_file=/home/antonio/Desktop/GitHub/MKT_ROI/mkt_roi/mkt_roi/mkt_roi_db_key.json -instances=rmf2gcp:us-west1:mktroidb=tcp:5432
+```  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 En este punto hay que instalar Conda para administrar los [ambientes](https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html).
 Y continuamos creando el ambiente e instalando Django. 
