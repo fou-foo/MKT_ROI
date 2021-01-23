@@ -92,7 +92,7 @@ DATABASES = {
         'NAME': 'mkt_roi',
         'USER': 'cenic_mkt_roi',
         'PASSWORD': 'cenic_mkt_roi',
-        'HOST': '127.0.0.1',
+        'HOST': '127.0.0.2', # en mi local lo tube que cambiar 
         'PORT': '5432',
     }
 }
