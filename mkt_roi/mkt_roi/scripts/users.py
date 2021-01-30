@@ -13,7 +13,7 @@ def run():
     for i in range(len(tipo)) :
         area = tipo[i]
         print(area[::-1])
-        user = Perfil.objects.create_user( username=area, email='antonio.garciar@coppel.com', password=area[::-1], tipo=area , first_name=nombre[i], 
+        user = Perfil.objects.create_user( username=area, email='christian.barradas@coppel.com', password=area[::-1], tipo=area , first_name=nombre[i], 
         last_name=apellido[i] )
         user.save()
        

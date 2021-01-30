@@ -26,10 +26,10 @@
        <td  class="excel_row">   {{ registro.segmento}} </td>
        <td  class="excel_row"> {{registro.canal}}</td>
        <td  class="excel_row"> {{registro.subcanal }}   </td>  
-    <td  class="excel_cuadro" > <input type="date"  name="inicio" value={{registro.inicio|date:"Y-m-d"}}>  
+    <td  class="excel_cuadro" > <input type="date"  name="inicio"  value={{registro.inicio|date:"Y-m-d"}}>  
          </td>
 
-    <td class="excel_cuadro">  <input type="date"  name="fin" value="{{registro.fin|date:"Y-m-d"}}"> 
+    <td class="excel_cuadro">  <input type="date"  name="fin"   value="{{registro.fin|date:"Y-m-d"}}"> 
     <td class="excel_cuadro"> <input type="number" step="any"  name="gasto" value={{registro.gasto}}> </td>
   </tr>
 {% endfor %}
