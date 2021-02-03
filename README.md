@@ -105,6 +105,7 @@ conda create -n mkt_roi --file requirementes_conda_env_dev.txt
 
 ```bash
 #comandos utiles 
+python manage.py runserver 0:8001 # CORRER EN MODO DEV EN EULER
 fuser -n tcp -k 8000
 sudo lsof -i -P -n | grep LISTEN
 service nginx stop 
