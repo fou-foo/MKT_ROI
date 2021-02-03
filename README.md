@@ -76,9 +76,12 @@ Y de una vez creamos el super admin de Django para Antonio
 
 ```bash
 python manage.py createsuperuser
-antonio
-antonio.garciar@coppel.com
-pass: antonio.garciar
+christian
+christian.barradas@coppel.com
+pass: christian.barradas
+alejandro
+alejandro.ahedo@coppel.com
+pass: alejandro.ahedo
 python manage.py runserver 
 ```
 
